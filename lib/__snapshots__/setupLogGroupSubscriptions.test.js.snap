@@ -1,0 +1,42 @@
+exports[`Setup LogGroup Subscriptions should setup log group subscriptions 1`] = `
+Object {
+  "LoggingLambdaPermission": Object {
+    "Properties": Object {
+      "Action": "lambda:InvokeFunction",
+      "FunctionName": Object {
+        "Fn::GetAtt": Array [
+          "LogHandlerLambdaFunction",
+          "Arn",
+        ],
+      },
+      "Principal": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "logs.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".amazonaws.com",
+          ],
+        ],
+      },
+    },
+    "Type": "AWS::Lambda::Permission",
+  },
+  "TestingLambdaFunctionSubscriptionFilter": Object {
+    "DependsOn": "LoggingLambdaPermission",
+    "Properties": Object {
+      "DestinationArn": Object {
+        "Fn::GetAtt": Array [
+          "LogHandlerLambdaFunction",
+          "Arn",
+        ],
+      },
+      "FilterPattern": "",
+      "LogGroupName": "/aws/lambda/testing",
+    },
+    "Type": "AWS::Logs::SubscriptionFilter",
+  },
+}
+`;
